@@ -2,6 +2,12 @@ const express = require('express');
 const router = express.Router();
 const db = require('../data/helpers/userDb');
 
+// ====== custom middleware
+function uppercaseName(req, res, next) {
+    req.body.name = req.body.name.toUpperCase();
+    next();
+};
+
 
 // ============  GET endpoints
 
@@ -44,14 +50,14 @@ router.get('/:id/posts', (req, res) => {
 
 // ============  POST endpoint
 
-router.post('/', (req, res) => {
-    const user = req.body;
+
+router.post('/', uppercaseName, (req, res) => {
     if (!req.body.hasOwnProperty('name')) {
         res.status(400).json({errorMessage: "Please provide a name property for the user."})
     }
     else {
-        db.insert(user)
-            .then(() => {res.status(201).json(user)})
+        db.insert(req.body)
+            .then(() => {res.status(201).json(req.body)})
             .catch(() => {res.status(500).json({error: "There was an error while saving the user to the database"})})
     }
 });
@@ -83,7 +89,7 @@ router.delete('/:id', (req, res) => {
 
 // ============  PUT endpoint
 
-router.put('/:id', (req, res) => {
+router.put('/:id', uppercaseName, (req, res) => {
     const id = req.params.id;
     const userUpdate = req.body;
 

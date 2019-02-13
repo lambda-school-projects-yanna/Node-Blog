@@ -4,7 +4,9 @@ const usersRoutes = require('./routes/usersRoutes');
 
 const server = express();
 
+// ====== middleware
 server.use(express.json());
+
 server.use('/api/posts', postsRoutes);
 server.use('/api/users', usersRoutes);
 
