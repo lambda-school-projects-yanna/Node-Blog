@@ -1,3 +1,5 @@
+require('dotenv').config();
+const port = process.env.PORT || 4000;
 const express = require('express');
 const postsRoutes = require('./routes/postsRoutes');
 const usersRoutes = require('./routes/usersRoutes');
@@ -14,6 +16,6 @@ server.use('/', (req, res) => {
     res.send('API running!')
 });
 
-server.listen(4000, () => {
-    console.log('API running on port 4000')
+server.listen(port, () => {
+    console.log(`API running on port ${port}`)
 });
